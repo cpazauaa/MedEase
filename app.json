@@ -4,7 +4,7 @@
     "slug": "MedEase",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/melogo.png",
     "scheme": "medease",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -26,6 +26,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "expo-notifications",
       "expo-router",
       [
         "expo-splash-screen",

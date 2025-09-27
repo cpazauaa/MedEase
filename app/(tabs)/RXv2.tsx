@@ -11,12 +11,13 @@ import { Fonts } from '@/constants/theme';
 
 export default function TabTwoScreen() {
   return (
+    
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerBackgroundColor={{ light: '#301c54ff', dark: '#000000ff' }}
       headerImage={
         <IconSymbol
-          size={310}
-          color="#808080"
+          size={200}
+          color="#b80606ff"
           name="chevron.left.forwardslash.chevron.right"
           style={styles.headerImage}
         />
@@ -27,10 +28,10 @@ export default function TabTwoScreen() {
           style={{
             fontFamily: Fonts.rounded,
           }}>
-          RX
+          RX 
         </ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
+      <ThemedText>Prescription Management</ThemedText>
       <Collapsible title="File-based routing">
         <ThemedText>
           This app has two screens:{' '}
@@ -100,13 +101,14 @@ export default function TabTwoScreen() {
 
 const styles = StyleSheet.create({
   headerImage: {
-    color: '#808080',
+    color: '#4e0f0fff',
     bottom: -90,
     left: -35,
     position: 'absolute',
   },
   titleContainer: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 5
+    ,
   },
 });

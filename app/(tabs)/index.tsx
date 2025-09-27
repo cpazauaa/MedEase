@@ -9,7 +9,7 @@ import { Link } from 'expo-router';
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#094557ff', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#a08787ff', dark: '#ffffffff' }}
       headerImage={
         <Image
           source={require('@/assets/images/melogo.png')}
@@ -17,11 +17,11 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome to MedEase</ThemedText>
+        <ThemedText type="title">Pharmaceutical Management</ThemedText>
       
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+        <ThemedText type="subtitle">Prescriptions Processed</ThemedText>
         <ThemedText>
           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
           Press{' '}
@@ -35,10 +35,11 @@ export default function HomeScreen() {
           to open developer tools.
         </ThemedText>
       </ThemedView>
+
       <ThemedView style={styles.stepContainer}>
         <Link href="/modal">
           <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+            <ThemedText type="subtitle">Patient Adherence Rate</ThemedText>
           </Link.Trigger>
           <Link.Preview />
           <Link.Menu>
@@ -63,8 +64,21 @@ export default function HomeScreen() {
           {`Tap the Explore tab to learn more about what's included in this starter app.`}
         </ThemedText>
       </ThemedView>
+
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+        <ThemedText type="subtitle">Low Stock Alerts</ThemedText>
+        <ThemedText>
+          {`When you're ready, run `}
+          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
+          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
+          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
+          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+        </ThemedText>
+      </ThemedView>
+
+      
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Insurance Approvals</ThemedText>
         <ThemedText>
           {`When you're ready, run `}
           <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
@@ -88,10 +102,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   meLogo: {
-    height: 250,
-    width: 500,
+    height: 200,
+    width: 400,
     bottom: 0,
-    left: 0,
+    left: -100,
     position: 'absolute',
   },
 });
