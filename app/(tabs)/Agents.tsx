@@ -1,10 +1,13 @@
 import { Image } from 'expo-image';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Fonts } from '@/constants/theme';
+
+
 
 export default function TabTwoScreen() {
   return (
@@ -22,7 +25,7 @@ export default function TabTwoScreen() {
           style={{
             fontFamily: Fonts.rounded,
           }}>
-          Chat
+          Agent Chat
         </ThemedText>
       </ThemedView>
       
