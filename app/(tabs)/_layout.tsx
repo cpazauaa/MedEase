@@ -31,13 +31,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Tracker"
-        options={{
-          title: 'Adherence',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="Inventory"
         options={{
           title: 'Inventory',
