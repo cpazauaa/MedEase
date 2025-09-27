@@ -6,22 +6,19 @@ import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Collapsible } from '@/components/ui/collapsible';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Fonts } from '@/constants/theme';
 
 export default function TabTwoScreen() {
   return (
     
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#301c54ff', dark: '#000000ff' }}
-      headerImage={
-        <IconSymbol
-          size={200}
-          color="#b80606ff"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
+      headerBackgroundColor={{ light: '#a08787ff', dark: '#ffffffff' }}
+            headerImage={
+              <Image
+                source={require('@/assets/images/images.png')}
+                style={styles.meLogo}
+              />
+            }>
       <ThemedView style={styles.titleContainer}>
         <ThemedText
           type="title"
@@ -110,5 +107,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 5
     ,
+  },
+  meLogo: {
+    height: 50,
+    width: 50,
+    bottom: 0,
+    left: 30,
+    position: 'absolute',
   },
 });

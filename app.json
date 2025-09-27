@@ -11,6 +11,8 @@
     "ios": {
       "supportsTablet": true
     },
+
+
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
