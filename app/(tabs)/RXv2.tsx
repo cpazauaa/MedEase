@@ -109,9 +109,11 @@ export default function TabTwoScreen() {
 /* Helper: Badge styling by status */
 function getBadgeStyle(status: string) {
   switch (status) {
+    case "Picked Up":
+      return { backgroundColor: "#000000ff" };
     case "Ready":
       return { backgroundColor: "#014b1bff" };
-    case "Waiting Pickup":
+    case "In Process":
       return { backgroundColor: "#333" };
     case "Pending Insurance":
       return { backgroundColor: "#8B0000" };
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
   table: {
     borderTopWidth: 1,
     borderColor: "#444",
-    borderRadius: 6,
+    borderRadius: 5,
     overflow: "hidden",
   },
   row: {
@@ -154,13 +156,13 @@ const styles = StyleSheet.create({
   },
   headerCell: {
     flex: 1,
-    padding: 10,
+    padding: 5,
     fontWeight: "bold",
     color: "white",
   },
   cell: {
     flex: 1,
-    padding: 10,
+    padding: 5,
   },
   statusCell: {
     flexDirection: "row",

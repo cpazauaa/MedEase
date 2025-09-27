@@ -8,7 +8,6 @@ import { StyleSheet } from "react-native";
 export default function DashBoard() {
   const [agents, setAgents] = useState([
     { id: 1, name: "Prescription Monitor", status: "unknown" },
-    { id: 2, name: "Patient Adherence", status: "unknown" },
     { id: 3, name: "Insurance Escalation", status: "unknown" },
     { id: 4, name: "Inventory Alert", status: "unknown" },
     { id: 5, name: "Notification Agent", status: "unknown" },

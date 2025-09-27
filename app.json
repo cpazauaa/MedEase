@@ -11,8 +11,6 @@
     "ios": {
       "supportsTablet": true
     },
-
-
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -46,6 +44,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b9611c77-4c62-4552-b532-65cc1b5a8dc8"
+      }
+    },
+    "owner": "expoclown"
   }
 }

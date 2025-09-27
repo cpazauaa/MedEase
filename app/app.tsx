@@ -13,6 +13,10 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+const pushTokenString = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+
+
 async function sendPushNotification(expoPushToken: string) {
   const message = {
     to: expoPushToken,
@@ -121,4 +125,6 @@ export default function App() {
       />
     </View>
   );
+
+  
 }
