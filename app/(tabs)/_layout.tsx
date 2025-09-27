@@ -19,7 +19,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Dashboard',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
@@ -33,14 +33,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Tracker"
         options={{
-          title: 'Tracker',
+          title: 'Adherence',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="Coach"
+        name="Inventory"
         options={{
-          title: 'Coach',
+          title: 'Inventory',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -52,9 +52,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Chat"
+        name="Agents"
         options={{
-          title: 'Chat',
+          title: 'Agents',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
