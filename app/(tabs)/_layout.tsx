@@ -27,35 +27,28 @@ export default function TabLayout() {
         name="RXv2"
         options={{
           title: 'RX',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="Tracker"
-        options={{
-          title: 'Adherence',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="pill.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="Inventory"
         options={{
           title: 'Inventory',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="tray.2.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="Insurance"
         options={{
           title: 'Insurance',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="Agents"
         options={{
           title: 'Agents',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="app.badge" color={color} />,
         }}
       />
     </Tabs>

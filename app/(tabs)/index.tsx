@@ -1,77 +1,57 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
-
-export default function HomeScreen() {
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import PharmacyHome from '../pharmacyhome';
+import MedicineDetails from '../medicine_details';
+import MedicineInventory from '../medicine_inventory';
+export type RootStackParamList = {
+  PharmacyHome: undefined;
+  MedicineInventory: undefined;
+  MedicineDetails: { medicineId: string };
+};
+const Stack = createStackNavigator<RootStackParamList>();
+export default function App() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: "#a08787ff", dark: "#ffffffff" }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require("@/assets/images/melogo.png")}
+          style={styles.meLogo}
         />
-      }>
+      }
+    >
+      {/* Title Section */}
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome to MedEase</ThemedText>
-      
+        <ThemedText type="title">AI Pharmaceutical Management</ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
+      {/* Agent Status */}
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Agent Status</ThemedText>
+        {agents.map((agent) => (
+          <ThemedText key={agent.id}>
+            {agent.name}: {getStatusIcon(agent.status)}
+          </ThemedText>
+        ))}
+      </ThemedView>
+
+      {/* Recent Activity Section */}
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Recent Activity</ThemedText>
+
+        {["Prescription RX-004 marked Ready",
+    "Insurance escalation initiated for RX-003",
+    "Patient P-2847 picked up RX-001",
+    "Inventory Alert: Low stock on Omeprazole"]
+
+    .map((activity, index) => (
+      <ThemedView key={index} style={styles.activityCard}>
+        <ThemedText style={styles.activityText}>{activity}
+
         </ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+    ))}
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -79,19 +59,48 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 0,
   },
   stepContainer: {
-    gap: 8,
+    gap: 10,
     marginBottom: 8,
+    padding: 16,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
+  meLogo: {
+    height: 190,
+    width: 190,
     bottom: 0,
-    left: 0,
-    position: 'absolute',
+    left: 30,
+    position: "absolute",
+  },
+  activityCard: {
+    backgroundColor: "#302e2eff",
+    padding: 12,
+    borderRadius: 12,
+    marginTop: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  activityText: {
+    fontSize: 14,
+    color: "#ffffffff",
   },
 });
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case "active":
+      return "🟢 Active";
+    case "idle":
+      return "🟡 Idle";
+    case "offline":
+      return "🔴 Offline";
+    default:
+      return "⚪ Unknown";
+  }
+};
