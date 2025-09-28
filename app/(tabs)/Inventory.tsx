@@ -62,10 +62,17 @@ export default function TabTwoScreen() {
 
           {/* Data Rows */}
           {inventory.map((item, index) => (
-            <View key={index} style={styles.tableRow}>
+            <View
+    key={index}
+    style={[
+      styles.tableRow,
+      index % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd, // alternate rows
+    ]} >
               <Text style={styles.cell}>{item.medication}</Text>
               <Text style={styles.cell}>{item.currentStock}</Text>
-              <Text style={[styles.cell, item.reorderStatus === 'Reorder' ? styles.reorder : {}]}>
+              <Text style={[styles.cell, item.reorderStatus === 'Reorder' ? styles.reorder : {},
+
+              ]}>
                 {item.reorderStatus}
               </Text>
               <Text style={styles.cell}>{item.supplier}</Text>
@@ -86,8 +93,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   meLogo: {
-    height: 70,
-    width: 70,
+    height: 140,
+    width: 140,
     bottom: 0,
     left: 30,
     position: 'absolute',
@@ -105,6 +112,9 @@ const styles = StyleSheet.create({
   shadowRadius: 4,
   elevation: 3, // for Android shadow
 },
+tableRowOdd: {
+  backgroundColor: '#4b4a4aff', // grey row
+},
   tableRow: {
   flexDirection: 'row',
   borderBottomWidth: 1,
@@ -112,7 +122,7 @@ const styles = StyleSheet.create({
   backgroundColor: '#fff', // default for even rows
 },
 tableRowEven: {
-  backgroundColor: '#110f0fff',
+  backgroundColor: '#090909ff',
 },
   tableHeader: {
   backgroundColor: '#131616ff',
@@ -127,15 +137,16 @@ tableRowEven: {
   minWidth: 120,
   textAlign: 'center',
   fontSize: 14,
+  color: 'white',
 },
   headerText: {
     fontWeight: 'bold',
     color: '#f1f1f1',
   },
   reorder: {
-  color: '#d32f2f',
+  color: '#f6f6f6ff',
   fontWeight: 'bold',
-  backgroundColor: '#ffebee',
+  backgroundColor: '#760717ff',
   borderRadius: 4,
   paddingHorizontal: 4,
 },

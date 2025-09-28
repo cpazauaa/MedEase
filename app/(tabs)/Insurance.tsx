@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   meLogo: {
-    height: 60,
-    width: 60,
+    height: 130,
+    width: 130,
     bottom: 0,
     left: 30,
     position: "absolute",

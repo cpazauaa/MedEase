@@ -5,14 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import MedicineDetails from '../medicine_details';
-import MedicineInventory from '../medicine_inventory';
 import ChatScreen from './Agents';
 
 export type RootStackParamList = {
   PharmacyHome: undefined;
-  MedicineInventory: undefined;
-  MedicineDetails: { medicineId: string };
   AgentChat: undefined;
 };
 
@@ -22,8 +18,6 @@ export default function App() {
   return (
     <Stack.Navigator initialRouteName="PharmacyHome" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="PharmacyHome" component={PharmacyHomeScreen} />
-      <Stack.Screen name="MedicineInventory" component={MedicineInventory} />
-      <Stack.Screen name="MedicineDetails" component={MedicineDetails} />
       <Stack.Screen name="AgentChat" component={ChatScreen} />
     </Stack.Navigator>
   );
@@ -104,10 +98,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   meLogo: {
-    height: 190,
-    width: 190,
-    bottom: 0,
-    left: 30,
+    height: 250,
+    width: 250,
+    bottom: -30,
+    left: 25,
     position: "absolute",
   },
   activityCard: {
@@ -133,15 +127,3 @@ const styles = StyleSheet.create({
   error: { color: 'red', fontWeight: 'bold' },
 });
 
-const getStatusIcon = (status: string) => {
-  switch (status) {
-    case "active":
-      return "🟢 Active";
-    case "idle":
-      return "🟡 Idle";
-    case "offline":
-      return "🔴 Offline";
-    default:
-      return "⚪ Unknown";
-  }
-};

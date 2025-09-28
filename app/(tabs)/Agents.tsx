@@ -1,11 +1,11 @@
-import { Image } from 'expo-image';
-import React, { useState, useRef, useEffect } from 'react';
-import { Button, KeyboardAvoidingView, Platform, StyleSheet, TextInput, ScrollView } from 'react-native';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Fonts } from '@/constants/theme';
 import Constants from 'expo-constants';
+import { Image } from 'expo-image';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput } from 'react-native';
 
 const agentUrl = Constants.expoConfig?.extra?.agentUrl;
 
@@ -250,8 +250,8 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   meLogo: {
-    height: 60,
-    width: 60,
+    height: 150,
+    width: 150,
     bottom: 0,
     left: 30,
     position: 'absolute',
