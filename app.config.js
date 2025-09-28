@@ -1,4 +1,4 @@
-{
+export default {
   "expo": {
     "name": "MedEase",
     "slug": "MedEase",
@@ -49,7 +49,8 @@
       "router": {},
       "eas": {
         "projectId": "b9611c77-4c62-4552-b532-65cc1b5a8dc8"
-      }
+      },
+      "agentUrl": process.env.AGENT_URL,
     },
     "owner": "expoclown"
   }
