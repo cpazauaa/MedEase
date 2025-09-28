@@ -110,21 +110,22 @@ export default function TabTwoScreen() {
 function getBadgeStyle(status: string) {
   switch (status) {
     case "Picked Up":
-      return { backgroundColor: "#000500ff" };
+      return { backgroundColor: "#1976d2" }; // calm blue
     case "Ready":
-      return { backgroundColor: "#09900bff" };
+      return { backgroundColor: "#2e7d32" }; // medical green
     case "In Progress":
-      return { backgroundColor: "#c5b912ff" };
+      return { backgroundColor: "#f9a825" }; // amber
     case "Pending Insurance":
-      return { backgroundColor: "#8B0000" };
+      return { backgroundColor: "#c62828" }; // deep red
     default:
-      return { backgroundColor: "#aaa" };
+      return { backgroundColor: "#9e9e9e" }; // neutral gray
   }
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    marginBottom: 16,
+    marginBottom: 20,
+    paddingHorizontal: 16,
   },
   meLogo: {
     height: 140,
@@ -134,44 +135,61 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   table: {
-    borderTopWidth: 1,
-    borderColor: "#444",
-    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    borderRadius: 12,
     overflow: "hidden",
+    marginHorizontal: 16,
+    marginBottom: 24,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "#444",
+borderBottomWidth: 1,
+    borderColor: "#f0f0f0",
+    backgroundColor: "#fff",
   },
   striped: {
-    backgroundColor: "#282323ff",
+    backgroundColor: "#fafafa", // light gray alt rows
   },
   inactiveRow: {
     opacity: 0.5,
   },
   headerRow: {
-    backgroundColor: "#111",
+    backgroundColor: "#b30000", // pharma red
   },
   headerCell: {
     flex: 1,
-    padding: 5,
+    padding: 10,
     fontWeight: "bold",
     color: "white",
+    fontSize: 14,
+    textAlign: "center",
   },
   cell: {
     flex: 1,
-    padding: 5,
+    padding: 10,
+    fontSize: 14,
+    color: "#333",
+    textAlign: "center",
   },
   statusCell: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   badge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
+    minWidth: 90,
+    alignItems: "center",
   },
   badgeText: {
     color: "white",
@@ -179,3 +197,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
+

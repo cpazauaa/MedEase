@@ -1,62 +1,46 @@
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Image } from 'expo-image';
-import React, { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import ChatScreen from './Agents';
+// screens/PharmacyHomeScreen.tsx
+import ParallaxScrollView from "@/components/parallax-scroll-view";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { Image } from "expo-image";
+import React, { useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
-export type RootStackParamList = {
-  PharmacyHome: undefined;
-  AgentChat: undefined;
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-export default function App() {
-  return (
-    <Stack.Navigator initialRouteName="PharmacyHome" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="PharmacyHome" component={PharmacyHomeScreen} />
-      <Stack.Screen name="AgentChat" component={ChatScreen} />
-    </Stack.Navigator>
-  );
-}
-
-// PharmacyHomeScreen includes the dashboard
-function PharmacyHomeScreen() {
-  const [agentStatus, setAgentStatus] = useState('Idle');
+export default function PharmacyHomeScreen() {
+  const [agentStatus, setAgentStatus] = useState("Idle");
 
   const runAgent = async () => {
-    setAgentStatus('Running');
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000)); // simulate task
-      setAgentStatus('Idle');
-    } catch (error) {
-      setAgentStatus('Error');
-    }
+    setAgentStatus("Running");
+    await new Promise((res) => setTimeout(res, 2000));
+    setAgentStatus("Idle");
   };
+
+  const recentActivity = [
+    "Prescription RX-004 marked Ready",
+    "Insurance escalation initiated for RX-003",
+    "Patient P-2847 picked up RX-001",
+    "Inventory Alert: Low stock on Omeprazole",
+  ];
 
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#a08787ff", dark: "#ffffffff" }}
       headerImage={<Image source={require("@/assets/images/melogo.png")} style={styles.meLogo} />}
     >
-      {/* Title */}
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">AI Pharmaceutical Management</ThemedText>
+        <ThemedText type="title">Dashboard</ThemedText>
       </ThemedView>
 
       {/* Agent Status */}
-      <View style={styles.container}>
-        <Text style={styles.title}>Agent Dashboard</Text>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Agents</Text>
         <Text style={styles.status}>
           Status:{" "}
           <Text
             style={
-              agentStatus === 'Running'
+              agentStatus === "Running"
                 ? styles.running
-                : agentStatus === 'Error'
+                : agentStatus === "Error"
                 ? styles.error
                 : styles.idle
             }
@@ -68,16 +52,11 @@ function PharmacyHomeScreen() {
       </View>
 
       {/* Recent Activity */}
-      <ThemedView style={styles.stepContainer}>
+      <ThemedView style={styles.cardContainer}>
         <ThemedText type="subtitle">Recent Activity</ThemedText>
-        {[
-          "Prescription RX-004 marked Ready",
-          "Insurance escalation initiated for RX-003",
-          "Patient P-2847 picked up RX-001",
-          "Inventory Alert: Low stock on Omeprazole",
-        ].map((activity, index) => (
+        {recentActivity.map((item, index) => (
           <ThemedView key={index} style={styles.activityCard}>
-            <ThemedText style={styles.activityText}>{activity}</ThemedText>
+            <Text style={styles.activityText}>{item}</Text>
           </ThemedView>
         ))}
       </ThemedView>
@@ -85,45 +64,27 @@ function PharmacyHomeScreen() {
   );
 }
 
-
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 0,
-  },
-  stepContainer: {
-    gap: 10,
-    marginBottom: 8,
-    padding: 16,
-  },
-  meLogo: {
-    height: 250,
-    width: 250,
-    bottom: -30,
-    left: 25,
-    position: "absolute",
-  },
-  activityCard: {
-    backgroundColor: "#302e2eff",
-    padding: 12,
+  meLogo: { height: 220, width: 220, bottom: -20, left: 20, position: "absolute", borderRadius: 90 },
+  titleContainer: { marginBottom: 20, paddingHorizontal: 16 },
+  card: {
+    backgroundColor: "#fff",
+    marginHorizontal: 16,
+    marginBottom: 16,
+    padding: 20,
     borderRadius: 12,
-    marginTop: 6,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
     elevation: 2,
   },
-  activityText: {
-    fontSize: 14,
-    color: "#ffffffff",
-  },
-  container: { backgroundColor: '#302e2eff', padding: 20, borderRadius: 12},
-  title: { color: 'white', fontSize: 20, fontWeight: 'bold', marginBottom: 12 },
-  status: { color: 'white', fontSize: 16, marginBottom: 12 },
-  idle: { color: 'orange', fontWeight: 'bold' },
-  running: { color: 'green', fontWeight: 'bold' },
-  error: { color: 'red', fontWeight: 'bold' },
+  cardTitle: { fontSize: 20, fontWeight: "bold", color: "#b30000", marginBottom: 10 },
+  status: { fontSize: 16, marginBottom: 12, color: "#444" },
+  idle: { color: "#ff9800", fontWeight: "bold" },
+  running: { color: "#4caf50", fontWeight: "bold" },
+  error: { color: "#d32f2f", fontWeight: "bold" },
+  cardContainer: { paddingHorizontal: 16, marginBottom: 24 },
+  activityCard: { padding: 14, marginTop: 6, borderRadius: 12, backgroundColor: "#fff", shadowColor: "#000", shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 3, elevation: 2 },
+  activityText: { fontSize: 14, color: "#333" },
 });
-

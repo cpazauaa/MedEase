@@ -208,11 +208,13 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
-    marginBottom: 12,
+    marginBottom: 16,
+    paddingHorizontal: 16,
   },
   chatContainer: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
   },
   messagesContainer: {
     flexGrow: 1,
@@ -220,31 +222,39 @@ const styles = StyleSheet.create({
   },
   messageBubble: {
     padding: 12,
-    borderRadius: 16,
-    marginVertical: 4,
+    borderRadius: 20,
+    marginVertical: 6,
     maxWidth: '75%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   userBubble: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#097eb4ff', 
     alignSelf: 'flex-end',
   },
   assistantBubble: {
-    backgroundColor: '#E5E5EA',
+    backgroundColor: '#f5f5f5', // light gray
     alignSelf: 'flex-start',
   },
   inputContainer: {
     flexDirection: 'row',
     gap: 8,
     alignItems: 'flex-end',
+    marginTop: 8,
   },
   input: {
     flex: 1,
     borderWidth: 1,
     borderColor: '#ccc',
     backgroundColor: '#fff',
-    borderRadius: 8,
+    borderRadius: 12,
     padding: 12,
     maxHeight: 100,
+    fontSize: 14,
+    color: '#333',
   },
   inputDisabled: {
     opacity: 0.6,
@@ -255,5 +265,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 30,
     position: 'absolute',
+    borderRadius: 75,
   },
 });
