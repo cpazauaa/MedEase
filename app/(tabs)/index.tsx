@@ -1,18 +1,16 @@
-import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { Image } from "expo-image";
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-
-export default function DashBoard() {
-  const [agents, setAgents] = useState([
-    { id: 1, name: "Prescription Monitor", status: "unknown" },
-    { id: 3, name: "Insurance Escalation", status: "unknown" },
-    { id: 4, name: "Inventory Alert", status: "unknown" },
-    { id: 5, name: "Notification Agent", status: "unknown" },
-  ]);
-
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import PharmacyHome from '../pharmacyhome';
+import MedicineDetails from '../medicine_details';
+import MedicineInventory from '../medicine_inventory';
+export type RootStackParamList = {
+  PharmacyHome: undefined;
+  MedicineInventory: undefined;
+  MedicineDetails: { medicineId: string };
+};
+const Stack = createStackNavigator<RootStackParamList>();
+export default function App() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#a08787ff", dark: "#ffffffff" }}
