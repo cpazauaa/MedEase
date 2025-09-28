@@ -6,9 +6,24 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+
+export function TabContent({ children, isActive }: { children: React.ReactNode; isActive: boolean }) {
+  return (
+    <Animated.View
+      entering={FadeIn.duration(300)}
+      exiting={FadeOut.duration(200)}
+      style={{ flex: 1, display: isActive ? 'flex' : 'none' }}
+    >
+      {children}
+    </Animated.View>
+  );
+}
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
+
 
   return (
     <Tabs
