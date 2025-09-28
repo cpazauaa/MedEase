@@ -36,9 +36,9 @@ export default function ChatScreen() {
         {
           method: 'POST',
           body: JSON.stringify({
-            question,
-            user_id: 'demo-user',   // replace with real user id if available
-            session_id: 'demo-session', // replace with real session id if available
+            question: question,
+            user_id: "demo-user",   // replace with real user id if available
+            session_id: "demo-session", // replace with real session id if available
           }),
           headers: { 'Content-Type': 'application/json' },
         }
