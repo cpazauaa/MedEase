@@ -19,7 +19,7 @@ export default function TabTwoScreen() {
       rxId: "RX-002",
       medication: "Metformin 500mg",
       patientId: "P-1923",
-      status: "In Process",
+      status: "In Progress",
       warning: true,
       inactive: true,
     },
@@ -41,7 +41,7 @@ export default function TabTwoScreen() {
       rxId: "RX-005",
       medication: "Amlodipine 5mg",
       patientId: "P-7890",
-      status: "In Process",
+      status: "In Progress",
       warning: true,
       inactive: true,
     },
@@ -113,7 +113,7 @@ function getBadgeStyle(status: string) {
       return { backgroundColor: "#000500ff" };
     case "Ready":
       return { backgroundColor: "#09900bff" };
-    case "In Process":
+    case "In Progress":
       return { backgroundColor: "#c5b912ff" };
     case "Pending Insurance":
       return { backgroundColor: "#8B0000" };
