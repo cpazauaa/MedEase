@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from './(tabs)/index';
 type Props = {
   route: RouteProp<RootStackParamList, 'MedicineDetails'>;
@@ -33,7 +33,7 @@ const MedicineDetails: React.FC<Props> = ({ route }) => {
 };
 export default MedicineDetails;
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", justifyContent: "center", padding: 24, backgroundColor: "#ffffff" },
+  container: { flex: 1, alignItems: "center", justifyContent: "center", padding: 24, backgroundColor: "#000000ff" },
   title: { fontSize: 26, fontWeight: 'bold', marginBottom: 8 },
   desc: { fontSize: 16, marginBottom: 10, textAlign: "center", color: "#525252" },
   info: { fontSize: 16, marginBottom: 5 }

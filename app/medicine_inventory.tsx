@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from './(tabs)/index';
 
 type Medicine = {
@@ -66,10 +66,10 @@ const MedicineInventory: React.FC<Props> = ({ navigation }) => {
 export default MedicineInventory;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#f9fafc' },
+  container: { flex: 1, padding: 20, backgroundColor: '#121313ff' },
   header: { fontSize: 24, fontWeight: 'bold', marginBottom: 18, color: '#153243' },
-  searchBox: { borderWidth: 1, borderColor: '#bfcbd9', borderRadius: 6, marginBottom: 16, padding: 8 },
-  medicineCard: { padding: 15, backgroundColor: '#e6f0ff', borderRadius: 10, marginVertical: 6 },
+  searchBox: { borderWidth: 1, borderColor: '#0b0b0bff', borderRadius: 6, marginBottom: 16, padding: 8 },
+  medicineCard: { padding: 15, backgroundColor: '#000000ff', borderRadius: 10, marginVertical: 6 },
   medicineName: { fontSize: 18, fontWeight: '500' },
   medicineStock: { color: '#13505b' }
 });
