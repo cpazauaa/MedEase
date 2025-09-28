@@ -7,6 +7,9 @@ from datetime import datetime, date
 from decimal import Decimal
 import pandas as pd
 
+# -------------------------
+# BigQuery Utilities
+# -------------------------
 def json_safe(val):
     if isinstance(val, (datetime, date, pd.Timestamp)):
         return val.isoformat()
@@ -15,9 +18,6 @@ def json_safe(val):
         return float(val)
     return val
 
-# -------------------------
-# BigQuery Utilities
-# -------------------------
 def get_bigquery_client() -> bigquery.Client:
     """
     Returns a BigQuery client using GOOGLE_APPLICATION_CREDENTIALS
@@ -43,35 +43,6 @@ def query_bigquery_context(sql_query: str) -> str:
         return json.dumps(safe_records)
     except Exception as e:
         return json.dumps({"status": "ERROR", "message": str(e)})
-
-
-def update_bigquery_rx_status(rx_id: str, new_status: str, audit_message: str) -> str:
-    """
-    Updates prescription status in BigQuery and logs the agent action.
-    """
-    bq_client = get_bigquery_client()
-    bq_dataset = os.getenv('BQ_DATASET_ID')
-    
-    update_query = f"""
-        UPDATE `{bq_dataset}.prescriptions`
-        SET status = @new_status, last_agent_action = @audit_message, last_update_ts = CURRENT_TIMESTAMP()
-        WHERE rx_id = @rx_id
-    """
-    try:
-        job_config = bigquery.QueryJobConfig(
-            query_parameters=[
-                bigquery.ScalarQueryParameter("new_status", "STRING", new_status),
-                bigquery.ScalarQueryParameter("audit_message", "STRING", audit_message),
-                bigquery.ScalarQueryParameter("rx_id", "STRING", rx_id),
-            ]
-        )
-        job = bq_client.query(update_query, job_config=job_config)
-        rows_affected = job.result().num_dml_affected_rows
-        return json.dumps({"status": "SUCCESS", "rows_affected": rows_affected})
-    except Exception as e:
-        print(f"[ADK TOOL] BigQuery update error: {e}")
-        return json.dumps({"status": "ERROR", "message": str(e)})
-
 
 # -------------------------
 # Twilio SMS Utility

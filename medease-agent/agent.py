@@ -3,7 +3,7 @@ from google.adk.agents import LlmAgent, ParallelAgent, LoopAgent
 from typing import Dict, Any, List, Tuple, Union
 from google.adk.planners import BuiltInPlanner
 from google.genai.types import ThinkingConfig
-from clients import query_bigquery_context, send_patient_sms, update_bigquery_rx_status
+from clients import query_bigquery_context, send_patient_sms
 
 gcp_project_id = os.getenv('GOOGLE_CLOUD_PROJECT')
 dataset_id = os.getenv('BQ_DATASET_ID')
@@ -231,12 +231,6 @@ def notify_patient(message: str, patient_info: Dict[str, Any]) -> dict:
     resp = send_patient_sms(phone_number, message)
     return resp
 
-def escalate_insurance(rx_id: str, reason: str = "auto_escalation") -> dict:
-    """Trigger insurance escalation workflow."""
-    update_bigquery_rx_status(rx_id, "insurance_in_progress", f"Escalated: {reason}")
-    # publish_message("rx.insurance_escalated", {"event_type":"rx.insurance_escalated","payload":{"rx_id":rx_id,"reason":reason}})
-    return {"rx_id": rx_id, "status": "escalated"}
-
 def check_inventory(
     filters: Dict[str, Union[Any, Tuple[str, Any], List[Any]]],
     limit: int = 50
@@ -319,35 +313,32 @@ root_agent = LlmAgent(
     name="pharmacy_assistant",
     model="gemini-2.5-flash",
     description="""
-Coordinates pharmacy workflows autonomously by managing prescriptions, patients, insurance issues, and inventory levels.
+Coordinates pharmacy workflows autonomously by managing prescriptions, patients, and inventory levels.
 
 Capabilities:
 1. Query prescriptions flexibly: filter by patient, medication, status, dates, or any other field in the prescriptions schema.
 2. Query and retrieve user information: filter by role, name, email, phone, or date of birth.
 3. Contact patients with reminders for pickups or refills.
-4. Escalate insurance issues automatically and notify staff when intervention is required.
-5. Monitor and query inventory: filter by NDC, stock thresholds, expiration dates, supplier, or any field in the inventory schema.
-6. Generate clear action steps, always using the appropriate tool with correct parameters.
+4. Monitor and query inventory: filter by NDC, stock thresholds, expiration dates, supplier, or any field in the inventory schema.
+5. Generate clear action steps, always using the appropriate tool with correct parameters.
 """,
     instruction="""
 You are a pharmacy AI assistant. Your tasks:
 
-1. Monitor prescriptions: Identify pending, waiting for pick-up, or insurance-blocked prescriptions.
+1. Monitor prescriptions: Identify pending or waiting-for-pickup prescriptions.
 2. Manage users: Query patient or staff details (e.g., role, name, contact information).
 3. Contact patients: Send reminders for pickup or refills.
-4. Escalate insurance issues: Follow up automatically and notify staff.
-5. Monitor inventory: Alert staff about low stock, expiring medications, or controlled substances.
+4. Monitor inventory: Alert staff about low stock, expiring medications, or controlled substances.
 
 Use the following tools as needed:
 - `get_prescriptions(filters, limit)`
 - `get_users(filters, limit)`
 - `notify_patient(message, patient_info)`
-- `escalate_insurance(rx_id, reason)`
 - `check_inventory(filters, limit)`
 
 Respond in clear action steps, specifying which tool to call and the parameters to provide.
 """,
-    tools=[get_prescriptions, get_users, notify_patient, escalate_insurance, check_inventory],
+    tools=[get_prescriptions, get_users, notify_patient, check_inventory],
     planner=planner,
     output_key="latest_action"
 )
