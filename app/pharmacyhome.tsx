@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from './(tabs)/index'; // adjust the path to where RootStackParamList is defined
 
 type PharmacyHomeProps = {
