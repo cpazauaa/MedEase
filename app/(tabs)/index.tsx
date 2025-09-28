@@ -1,16 +1,40 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { StyleSheet } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PharmacyHome from '../pharmacyhome';
 import MedicineDetails from '../medicine_details';
 import MedicineInventory from '../medicine_inventory';
+import ParallaxScrollView from '@/components/parallax-scroll-view';
+import { Image } from 'expo-image';
+import { ThemedView } from '@/components/themed-view';
+import { ThemedText } from '@/components/themed-text';
+import ChatScreen from './Agents';
+
 export type RootStackParamList = {
   PharmacyHome: undefined;
   MedicineInventory: undefined;
   MedicineDetails: { medicineId: string };
+  AgentChat: undefined;
 };
-const Stack = createStackNavigator<RootStackParamList>();
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
 export default function App() {
+  return (
+    <Stack.Navigator
+      initialRouteName="PharmacyHome"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="PharmacyHome" component={PharmacyHomeScreen} />
+      <Stack.Screen name="MedicineInventory" component={MedicineInventory} />
+      <Stack.Screen name="MedicineDetails" component={MedicineDetails} />
+      <Stack.Screen name="AgentChat" component={ChatScreen} />
+    </Stack.Navigator>
+  );
+}
+
+// A wrapper around PharmacyHome to include ParallaxScrollView content
+function PharmacyHomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#a08787ff", dark: "#ffffffff" }}
@@ -29,29 +53,26 @@ export default function App() {
       {/* Agent Status */}
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Agent Status</ThemedText>
-        {agents.map((agent) => (
+        {/* {agents.map((agent) => (
           <ThemedText key={agent.id}>
             {agent.name}: {getStatusIcon(agent.status)}
           </ThemedText>
-        ))}
+        ))} */}
       </ThemedView>
 
       {/* Recent Activity Section */}
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Recent Activity</ThemedText>
-
-        {["Prescription RX-004 marked Ready",
-    "Insurance escalation initiated for RX-003",
-    "Patient P-2847 picked up RX-001",
-    "Inventory Alert: Low stock on Omeprazole"]
-
-    .map((activity, index) => (
-      <ThemedView key={index} style={styles.activityCard}>
-        <ThemedText style={styles.activityText}>{activity}
-
-        </ThemedText>
-      </ThemedView>
-    ))}
+        {[
+          "Prescription RX-004 marked Ready",
+          "Insurance escalation initiated for RX-003",
+          "Patient P-2847 picked up RX-001",
+          "Inventory Alert: Low stock on Omeprazole",
+        ].map((activity, index) => (
+          <ThemedView key={index} style={styles.activityCard}>
+            <ThemedText style={styles.activityText}>{activity}</ThemedText>
+          </ThemedView>
+        ))}
       </ThemedView>
     </ParallaxScrollView>
   );
