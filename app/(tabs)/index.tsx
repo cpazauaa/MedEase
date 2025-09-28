@@ -38,16 +38,22 @@ export default function DashBoard() {
         ))}
       </ThemedView>
 
-      {/* Performance Section */}
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Performance</ThemedText>
-        
-      </ThemedView>
-
       {/* Recent Activity Section */}
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Recent Activity</ThemedText>
-        
+
+        {["Prescription RX-004 marked Ready",
+    "Insurance escalation initiated for RX-003",
+    "Patient P-2847 picked up RX-001",
+    "Inventory Alert: Low stock on Omeprazole"]
+
+    .map((activity, index) => (
+      <ThemedView key={index} style={styles.activityCard}>
+        <ThemedText style={styles.activityText}>{activity}
+
+        </ThemedText>
+      </ThemedView>
+    ))}
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -65,11 +71,26 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   meLogo: {
-    height: 175,
-    width: 175,
+    height: 190,
+    width: 190,
     bottom: 0,
-    left: 35,
+    left: 30,
     position: "absolute",
+  },
+  activityCard: {
+    backgroundColor: "#302e2eff",
+    padding: 12,
+    borderRadius: 12,
+    marginTop: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  activityText: {
+    fontSize: 14,
+    color: "#ffffffff",
   },
 });
 
