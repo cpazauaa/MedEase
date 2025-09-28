@@ -1,0 +1,8 @@
+twilio
+fastapi
+uvicorn[standard]
+google-cloud-bigquery
+google-adk
+pandas
+pydantic
+httpx
