@@ -33,7 +33,7 @@ async def event_generator(question: str, user_id: str, session_id: str):
         new_message=new_message,
     ):
         # Convert event to JSON
-        yield json.dumps(event.model_dump()) + "\n"
+        yield event.model_dump_json() + "\n"
 
 @app.post("/agent/respond")
 async def respond(request: AgentRequest):
