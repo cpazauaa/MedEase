@@ -6,3 +6,4 @@ google-adk
 pandas
 pydantic
 httpx
+db-dtypes

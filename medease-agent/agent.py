@@ -50,6 +50,17 @@ PRESCRIPTIONS_COLUMN_TYPES = {
     "updated_at": "TIMESTAMP",
 }
 
+USERS_COLUMN_TYPES = {
+    "id": "STRING",
+    "name": "STRING",
+    "role": "STRING",
+    "email": "STRING",
+    "phone": "STRING",
+    "DateOfBirth": "DATE",
+    "created_at": "TIMESTAMP",
+    "updated_at": "TIMESTAMP",
+}
+
 def format_value(field_map: Dict[str, str], col: str, val: Any) -> str:
     col_type = field_map.get(col)
 
@@ -135,11 +146,90 @@ def get_prescriptions(filters: Dict[str, Any], limit: int = 50) -> List[dict]:
     except Exception:
         return {}
 
-def notify_patient(rx_id: str, message: str, patient_id: str) -> dict:
-    """Send patient notification via SMS."""
-    resp = send_patient_sms(phone, message)
-    update_bigquery_rx_status(rx_id, "ready_notified", "Patient notified via SMS")
-    return {"rx_id": rx_id, "status":"notified", "provider_resp": resp}
+def get_users(filters: Dict[str, Any], limit: int = 50) -> List[dict]:
+    """
+    Fetch users from BigQuery with optional filters.
+
+    Filters must use field names from the prescriptions schema:
+
+    Users Table Schema:
+    - id (STRING)
+    - name (STRING)
+    - role (STRING)
+    - email (STRING)
+    - phone (STRING)
+    - DateOfBirth (DATE)
+    - created_at (TIMESTAMP)
+    - updated_at (TIMESTAMP)
+
+    Args:
+        filters: dict mapping column names to filter values
+                 Examples:
+                    {"role": "pharmacist"}
+                    {"DateOfBirth": (">", "1990-01-01")}
+        limit: maximum number of rows to return.
+
+    Returns:
+        List of user dicts (JSON-serializable).
+    """
+    where_clauses = []
+    for col, val in filters.items():
+        if isinstance(val, (tuple, list)) and len(val) == 2:
+            op, v = val
+        else:
+            op, v = "=", val
+
+        if v is None:
+            if op in ("=", "IS"):
+                where_clauses.append(f"{col} IS NULL")
+            elif op in ("!=", "<>", "IS NOT"):
+                where_clauses.append(f"{col} IS NOT NULL")
+        else:
+            where_clauses.append(f"{col} {op} {format_value(USERS_COLUMN_TYPES, col, v)}")
+
+    where_sql = f"WHERE {' AND '.join(where_clauses)}" if where_clauses else ""
+
+    sql = f"""
+        SELECT *
+        FROM `{gcp_project_id}.{dataset_id}.Users`
+        {where_sql}
+        LIMIT {limit}
+    """
+    raw = query_bigquery_context(sql)
+    print(f"raw: {raw}")
+    import json
+    try:
+        rows = json.loads(raw)
+        return rows if isinstance(rows, list) else []
+    except Exception:
+        return []
+
+def notify_patient(message: str, patient_info: Dict[str, Any]) -> dict:
+    """
+    Send a notification to a patient via SMS.
+
+    Args:
+        message: The text message to send to the patient.
+        patient_info: A dictionary representing the patient, following the Users table schema:
+            - id (STRING)
+            - name (STRING)
+            - role (STRING)
+            - email (STRING)
+            - phone (STRING, optional)
+            - DateOfBirth (DATE, optional)
+            - created_at (TIMESTAMP, optional)
+            - updated_at (TIMESTAMP, optional)
+
+    Returns:
+        dict: Status of the notification and response from the SMS provider.
+              Example: {"status": "SUCCESS", ...}
+    """
+    phone_number = patient_info["phone"]
+    if not phone_number:
+        return {"status": "FAILED", "message": "No phone number provided"}
+
+    resp = send_patient_sms(phone_number, message)
+    return resp
 
 def escalate_insurance(rx_id: str, reason: str = "auto_escalation") -> dict:
     """Trigger insurance escalation workflow."""
@@ -229,32 +319,35 @@ root_agent = LlmAgent(
     name="pharmacy_assistant",
     model="gemini-2.5-flash",
     description="""
-Coordinates pharmacy workflows autonomously by managing prescriptions, patient communications, insurance issues, and inventory levels.
+Coordinates pharmacy workflows autonomously by managing prescriptions, patients, insurance issues, and inventory levels.
 
 Capabilities:
-1. Monitor prescriptions using flexible queries: filter by patient, medication, status, dates, or any other field.
-2. Contact patients with reminders for pickups or refills.
-3. Escalate insurance issues automatically and notify staff when intervention is required.
-4. Monitor and query inventory: filter by NDC, stock thresholds, expiration dates, supplier, or any field in the inventory schema.
-5. Generate clear action steps, always using the appropriate tool with correct parameters.
+1. Query prescriptions flexibly: filter by patient, medication, status, dates, or any other field in the prescriptions schema.
+2. Query and retrieve user information: filter by role, name, email, phone, or date of birth.
+3. Contact patients with reminders for pickups or refills.
+4. Escalate insurance issues automatically and notify staff when intervention is required.
+5. Monitor and query inventory: filter by NDC, stock thresholds, expiration dates, supplier, or any field in the inventory schema.
+6. Generate clear action steps, always using the appropriate tool with correct parameters.
 """,
     instruction="""
 You are a pharmacy AI assistant. Your tasks:
 
 1. Monitor prescriptions: Identify pending, waiting for pick-up, or insurance-blocked prescriptions.
-2. Contact patients: Send reminders for pickup or refills.
-3. Escalate insurance issues: Follow up automatically and notify staff.
-4. Monitor inventory: Alert staff about low stock, expiring medications, or controlled substances.
+2. Manage users: Query patient or staff details (e.g., role, name, contact information).
+3. Contact patients: Send reminders for pickup or refills.
+4. Escalate insurance issues: Follow up automatically and notify staff.
+5. Monitor inventory: Alert staff about low stock, expiring medications, or controlled substances.
 
 Use the following tools as needed:
 - `get_prescriptions(filters, limit)`
-- `notify_patient(rx_id, message, phone)`
+- `get_users(filters, limit)`
+- `notify_patient(message, patient_info)`
 - `escalate_insurance(rx_id, reason)`
 - `check_inventory(filters, limit)`
 
-Respond in clear action steps, including which tool you will call and the necessary parameters.
+Respond in clear action steps, specifying which tool to call and the parameters to provide.
 """,
-    tools=[get_prescriptions, notify_patient, escalate_insurance, check_inventory],
+    tools=[get_prescriptions, get_users, notify_patient, escalate_insurance, check_inventory],
     planner=planner,
     output_key="latest_action"
 )

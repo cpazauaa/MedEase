@@ -76,6 +76,24 @@ def update_bigquery_rx_status(rx_id: str, new_status: str, audit_message: str) -
 # -------------------------
 # Twilio SMS Utility
 # -------------------------
+def normalize_us_phone(phone: str) -> str:
+    """
+    Normalize a US phone number from 'xxx-xxx-xxxx' format into E.164 format '+1xxxxxxxxxx'.
+
+    Args:
+        phone (str): Phone number as a string in 'xxx-xxx-xxxx' format.
+
+    Returns:
+        str: Normalized phone number in E.164 format for Twilio.
+    """
+    # Strip any non-numeric characters (like dashes, spaces, parentheses)
+    digits = "".join([c for c in phone if c.isdigit()])
+
+    if len(digits) != 10:
+        raise ValueError(f"Invalid US phone number format: {phone}")
+
+    return f"+1{digits}"
+
 def send_patient_sms(to_number: str, message_body: str) -> str:
     """
     Sends an SMS message using Twilio.
@@ -88,11 +106,14 @@ def send_patient_sms(to_number: str, message_body: str) -> str:
         raise ValueError("Twilio environment variables not set")
 
     try:
+        # Normalize to Twilio-friendly E.164 format
+        normalized_number = normalize_us_phone(to_number)
+
         client = TwilioClient(account_sid, auth_token)
         message = client.messages.create(
             body=message_body,
             from_=twilio_number,
-            to=to_number
+            to=normalized_number
         )
         print(f"[ADK TOOL] SMS sent to {to_number}, SID: {message.sid}")
         return json.dumps({
