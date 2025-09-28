@@ -19,17 +19,77 @@ export default function ChatScreen() {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-
+    // push user message
     const userMessage: Message = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
+    const question = input;
     setInput('');
 
-    
-    const assistantMessage: Message = {
-      role: 'assistant',
-      content: `Echo: ${userMessage.content}`,
-    };
+    // create empty assistant placeholder
+    const assistantMessage: Message = { role: 'assistant', content: '' };
     setMessages((prev) => [...prev, assistantMessage]);
+    const assistantIndex = messages.length + 1;
+
+    try {
+      const response = await fetch(
+        'https://medease-agent-29640847701.us-east1.run.app/agent/respond',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            question,
+            user_id: 'demo-user',   // replace with real user id if available
+            session_id: 'demo-session', // replace with real session id if available
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+
+      if (!reader) return;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // keep incomplete line
+
+        for (const line of lines) {
+          if (line.trim()) {
+            try {
+              const event = JSON.parse(line);
+
+              // update assistant message as new chunks arrive
+              setMessages((prev) => {
+                const updated = [...prev];
+                updated[assistantIndex] = {
+                  role: 'assistant',
+                  content: updated[assistantIndex].content + (event.text || ''),
+                };
+                return updated;
+              });
+            } catch (err) {
+              console.warn('Failed to parse line', line, err);
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Chat error:', err);
+      // show fallback error
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[assistantIndex] = {
+          role: 'assistant',
+          content: '⚠️ Failed to fetch response',
+        };
+        return updated;
+      });
+    }
   };
 
   return (
@@ -43,10 +103,7 @@ export default function ChatScreen() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{ fontFamily: Fonts.rounded }}
-        >
+        <ThemedText type="title" style={{ fontFamily: Fonts.rounded }}>
           Agent Chat
         </ThemedText>
       </ThemedView>
@@ -67,7 +124,7 @@ export default function ChatScreen() {
               <ThemedText
                 style={{
                   fontFamily: Fonts.rounded,
-                  color: msg.role === 'user' ? '#fff' : '#83bcdcff',
+                  color: msg.role === 'user' ? '#fff' : '#000',
                 }}
               >
                 {msg.content}
@@ -127,7 +184,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: '#ccc',
-    backgroundColor: '#ccc',
+    backgroundColor: '#fff',
     borderRadius: 8,
     padding: 12,
   },
